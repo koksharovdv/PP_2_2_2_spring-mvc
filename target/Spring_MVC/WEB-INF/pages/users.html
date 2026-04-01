@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/users" method="post">
+    <input type="text" name="firstName" placeholder="First Name"/>
+    <input type="text" name="lastName" placeholder="Last Name"/>
+    <input type="text" name="email" placeholder="Email"/>
+    <button type="submit">Add user</button>
+</form>
+<div th:each="user : ${users}">
+    <p th:text="${user.firstName + ' ' + user.lastName + ' ' + user.email}"></p>
+    <a th:href="@{/users/edit/{id}(id=${user.id})}">Edit</a>
+    <form th:action="@{/users/delete}" method="post">
+        <input type="hidden" name="id" th:value="${user.id}" />
+        <button type="submit">Delete</button>
+    </form>
+</div>
+</body>
+</html>
