@@ -23,7 +23,7 @@ public class UserController {
         model.addAttribute("users", users);
         return "users";
     }
-    @GetMapping("/edit?id=1")
+    @GetMapping("/edit")
     public String editUsers(Model model, @RequestParam Long id) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
