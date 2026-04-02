@@ -3,6 +3,7 @@ package web.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 @Entity
 @Table(name = "users")
@@ -12,14 +13,16 @@ public class User {
     private Long id;
 
     @NotBlank
+    @Pattern(regexp = "^[A-Za-zА-Яа-яёЁ]+$", message = "Только буквы")
     @Column(name = "first_name")
     private String firstName;
 
     @NotBlank
+    @Pattern(regexp = "^[A-Za-zА-Яа-яёЁ]+$", message = "Только буквы")
     @Column(name = "last_name")
     private String lastName;
 
-
+    @NotBlank
     @Email
     @Column(name = "email")
     private String email;

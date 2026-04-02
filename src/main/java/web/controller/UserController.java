@@ -8,19 +8,25 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
+import web.service.UserServiceImpl;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public String getUsers(Model model, @RequestParam(defaultValue = "10") int count) {
         List<User> users = userService.getUsers(count);
         model.addAttribute("users", users);
+        model.addAttribute("user", new User());
         return "users";
     }
     @GetMapping("/edit")
@@ -31,7 +37,10 @@ public class UserController {
 
     }
     @PostMapping("/edit")
-    public String editUser(@ModelAttribute User user) {
+    public String editUser(@Validated @ModelAttribute User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "edit";
+        }
         userService.edit(user);
         return "redirect:/users";
     }
@@ -44,6 +53,8 @@ public class UserController {
 
             List<User> users = userService.getUsers(safeCount);
             model.addAttribute("users", users);
+            model.addAttribute("user", user);
+
             return "users";
         }
         userService.save(user);

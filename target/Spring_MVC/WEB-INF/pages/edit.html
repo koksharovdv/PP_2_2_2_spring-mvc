@@ -1,20 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit user</title>
+
+    <style>
+        .field {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+            width: 250px;
+        }
+
+        .error {
+            min-height: 18px;
+            color: red;
+            font-size: 12px;
+        }
+
+        input {
+            padding: 5px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
+
+<h2>Edit user</h2>
+
 <form th:action="@{/users/edit}" th:object="${user}" method="post">
 
-  <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{id}"/>
 
-  <input type="text" th:field="*{firstName}" placeholder="First Name"/>
-  <input type="text" th:field="*{lastName}" placeholder="Last Name"/>
-  <input type="text" th:field="*{email}" placeholder="Email"/>
+    <div class="field">
+        <input type="text"
+               th:field="*{firstName}"
+               placeholder="First Name"
+               th:classappend="${#fields.hasErrors('firstName')} ? 'error-input' : ''"/>
+        <div class="error" th:errors="*{firstName}"></div>
+    </div>
 
-  <button type="submit">Update</button>
+    <div class="field">
+        <input type="text"
+               th:field="*{lastName}"
+               placeholder="Last Name"
+               th:classappend="${#fields.hasErrors('lastName')} ? 'error-input' : ''"/>
+        <div class="error" th:errors="*{lastName}"></div>
+    </div>
 
+    <div class="field">
+        <input type="text"
+               th:field="*{email}"
+               placeholder="Email"
+               th:classappend="${#fields.hasErrors('email')} ? 'error-input' : ''"/>
+        <div class="error" th:errors="*{email}"></div>
+    </div>
+
+    <button type="submit">Update</button>
 </form>
+
 </body>
 </html>

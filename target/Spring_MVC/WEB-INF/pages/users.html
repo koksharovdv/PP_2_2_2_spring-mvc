@@ -1,23 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Users</title>
+
+    <style>
+        .field {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+            width: 250px;
+        }
+
+        .error {
+            min-height: 18px;
+            color: red;
+            font-size: 12px;
+        }
+
+        input {
+            padding: 5px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-<form action="/users" method="post">
-    <input type="text" name="firstName" placeholder="First Name"/>
-    <input type="text" name="lastName" placeholder="Last Name"/>
-    <input type="text" name="email" placeholder="Email"/>
+
+<form th:action="@{/users}" th:object="${user}" method="post">
+
+    <div class="field">
+        <input type="text" th:field="*{firstName}" placeholder="First Name"/>
+        <div class="error" th:errors="*{firstName}"></div>
+    </div>
+
+    <div class="field">
+        <input type="text" th:field="*{lastName}" placeholder="Last Name"/>
+        <div class="error" th:errors="*{lastName}"></div>
+    </div>
+
+    <div class="field">
+        <input type="text" th:field="*{email}" placeholder="Email"/>
+        <div class="error" th:errors="*{email}"></div>
+    </div>
+
     <button type="submit">Add user</button>
 </form>
+
+<hr>
+
 <div th:each="user : ${users}">
     <p th:text="${user.firstName + ' ' + user.lastName + ' ' + user.email}"></p>
+
     <a th:href="@{/users/edit(id=${user.id})}">Edit</a>
+
     <form th:action="@{/users/delete}" method="post">
         <input type="hidden" name="id" th:value="${user.id}" />
         <button type="submit">Delete</button>
     </form>
 </div>
+
 </body>
 </html>
